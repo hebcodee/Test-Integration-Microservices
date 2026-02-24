@@ -69,6 +69,3 @@ docker run -d -p 8080:8080 --name=api-market-place rodsordi/api-market-place:mas
 
 - [SemVer](https://semver.org/lang/pt-BR/)
 
-## ✒ Autores
-
-- [Rodrigo de Sordi](https://github.com/rodsordi)
