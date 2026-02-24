@@ -10,6 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -72,8 +75,47 @@ class CadastroProdutoUseCaseTest {
                         .isNotNull();
 
             }
+
+            @DisplayName("Quando um produto com o campo status igual à {status}")
+            @ParameterizedTest
+            @EnumSource(Produto.Status.class)
+            void teste2(Produto.Status status) {
+                // Dado
+                var produto = criarProduto()
+                        .comTodosOsCampos();
+                setField(produto, "status", status);
+
+                //Quando
+                var atual = cadastroProdutoUseCase.cadastrar(produto);
+
+
+                //Entao
+                assertThat(produto.getStatus()).isEqualTo(status);
+            }
+
+            @DisplayName("Dado um produto com todos os campos e com {status}")
+            @ParameterizedTest
+            @CsvSource(value = {
+                    "AVAILABLE | (Disponível)",
+                    "PENDING   | (Pendente)",
+                    "SOLD      | (Vendido)",
+            }, delimiterString = "|")
+            void teste3(Produto.Status status, String finalDaDescricao) {
+                // Dado
+                var produto = criarProduto()
+                        .comTodosOsCampos();
+                setField(produto, "status", status);
+
+                //Quando
+                var atual = cadastroProdutoUseCase.cadastrar(produto);
+
+
+                //Entao
+                assertThat(atual.getDescricao())
+                        .endsWith(finalDaDescricao);
+            }
         }
 
-        
+
     }
 }
