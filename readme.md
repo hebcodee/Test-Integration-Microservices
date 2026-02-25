@@ -1,71 +1,102 @@
-# API Marketplace
+# 🛒 API Marketplace
 
-API Responsável por gerenciar produtos no marketplace.
+API para gerenciamento de produtos em marketplace, desenvolvida com Spring Boot para demonstrar boas práticas de testes
+de integração.
 
-## 🗒️ Informações
+## 📖 Sobre o Projeto
 
-- Projeto referência para as aulas de testes de integração da Alura.
+Este é um projeto de referência utilizado nas aulas de **Testes de Integração** da Alura, demonstrando como implementar
+testes robustos em aplicações Spring Boot.
 
-## 📋 Pré-requisitos
+## 🔧 Pré-requisitos
 
-- [OpenJdk 21](https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz)
-- [IntelliJ Comunity](https://www.jetbrains.com/idea/download/?section=linux)
-- [Docker](https://www.docker.com/get-started/)
-- Postgres (Imagem Docker)
+- **Java 21
+  ** - [OpenJDK 21](https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz)
+- **Maven** - Gerenciador de dependências
+- **Docker** - Para executar os containers
+- **IDE** - [IntelliJ IDEA Community](https://www.jetbrains.com/idea/download/)
 
-``` sh
+## 🐳 Dependências via Docker
+
+Execute os seguintes comandos para iniciar os serviços necessários:
+
+```bash
+# Banco de dados
 docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres postgres
+
+# AWS Local (S3, etc)
+docker run -d -p 4566:4566 -p 4510-4559:4510-4559 --name localstack localstack/localstack
+
+# Message Broker
+docker run -d -p 5672:5672 --name rabbitmq rabbitmq
+
+# Cache
+docker run -d -p 6379:6379 --name redis redis
 ```
 
-- Localstack (Imagem Docker)
+## ⚙️ Configuração
 
-``` sh
-docker run -d -p 4566:4566 -p 4510-4559:4510-4559 --name=localstack localstack/localstack
+### Variáveis de Ambiente
+
+| Variável                 | Valor               |
+|--------------------------|---------------------|
+| `spring.profiles.active` | `local,infra_local` |
+
+## 🗂️ Estrutura do Projeto
+
+Abaixo está a estrutura principal do projeto:
+
+```
+api-market-place/
+├── application/         # Código principal da aplicação
+│   ├── src/main/java/   # Pacotes e classes Java
+│   ├── src/main/resources/ # Arquivos de configuração (application.properties, etc.)
+│   ├── target/          # Arquivos gerados pelo Maven
+├── domain/              # Camada de domínio (entidades, serviços, etc.)
+├── infrastructure/      # Configurações e integrações externas (banco, mensageria, etc.)
+├── tests/               # Testes unitários e de integração
+├── Dockerfile           # Configuração para container Docker
+├── pom.xml              # Arquivo de configuração do Maven
 ```
 
-- RabbitMQ (Imagem Docker)
+## 🚀 Execução
 
-``` sh
-docker run -d -p 5672:5672 --name=rabbitmq rabbitmq
+### Build
+
+```bash
+mvn clean install -DskipTests
 ```
 
-- Redis (Imagem Docker)
+### Aplicação
 
-``` sh
-docker run -d -p 6379:6379 --name=redis redis
-```
-
-## 🌳 Variáveis de ambiente
-
-| Nome                   | Valor             |
-|------------------------|-------------------|
-| spring.profiles.active | local,infra_local |
-
-## 📦 Construindo
-
-```mvn clean install -DskipTests```
-
-## ▶️ Executando pacote
-
-``` sh
+```bash
 java -jar -Dspring.profiles.active=local,infra_local application/target/api-market-place.application-0.0.1-SNAPSHOT.jar
 ```
 
-## 🎬 Executando imagem
+### Docker
 
-``` sh
+```bash
 docker run -d -p 8080:8080 --name=api-market-place rodsordi/api-market-place:master
 ```
 
-## 👌 Executando Testes
+## ✅ Testes
 
-```mvn test```
+### Testes Unitários
 
-## 🍿 Executando Testes de Integração
+```bash
+mvn test
+```
 
-```mvn test -DintegrationTests```
+### Testes de Integração
 
-## 📌 Versão
+```bash
+mvn test -DintegrationTests
+```
 
-- [SemVer](https://semver.org/lang/pt-BR/)
+## 📌 Versionamento
 
+Este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
+
+---
+
+**Desenvolvido com ❤️ para fins educacionais**
