@@ -1,20 +1,19 @@
 name: Build Publish
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ 'aula-3-github-actions' ]
 jobs:
   build:
-    name: Construir artefato com Maven
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Configura jdk
+      - name: Configurar jdk
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: 21
+          distribution: temurin
           architecture: x64
           cache: maven
 
@@ -29,14 +28,6 @@ jobs:
         with:
           name: api-market-place-artifact
           path: application/target
-
-      - name: Guardar artefato em cache
-        run: actions/cache@v3
-        with:
-          key: package
-          path: .
-
-
 
   publish_to_registry:
     needs: [ build ]
