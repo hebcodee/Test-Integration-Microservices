@@ -101,7 +101,3 @@ mvn test -DintegrationTests
 ## 📌 Versionamento
 
 Este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
-
-## License
-
-MIT License
