@@ -1,12 +1,23 @@
-# 🛒 API Marketplace
+# Sobre o Projeto
 
-API para gerenciamento de produtos em marketplace, desenvolvida com Spring Boot para demonstrar boas práticas de testes
-de integração.
+Esse é um projeto base para aplicacao de testes, ele possui testes de unidade, de integracao, e2e e workflow de integração continua (CI/CD). O projeto realiza teste de integracao atraves do TestContainers no serviços de: Redis, RabbitMQ, PostgreSQL, Flyway e ApiREST.  
 
-## 📖 Sobre o Projeto
+## 🗂️ Estrutura do Projeto
 
-Este é um projeto de referência utilizado nas aulas de **Testes de Integração** da Alura, demonstrando como implementar
-testes robustos em aplicações Spring Boot.
+Abaixo está a estrutura principal do projeto:
+
+```
+api-market-place/
+├── application/         # Código principal da aplicação
+│   ├── src/main/java/   # Pacotes e classes Java
+│   ├── src/main/resources/ # Arquivos de configuração (application.properties, etc.)
+│   ├── target/          # Arquivos gerados pelo Maven
+├── domain/              # Camada de domínio (entidades, serviços, etc.)
+├── infrastructure/      # Configurações e integrações externas (banco, mensageria, etc.)
+├── tests/               # Testes unitários e de integração
+├── Dockerfile           # Configuração para container Docker
+├── pom.xml              # Arquivo de configuração do Maven
+```
 
 ## 🔧 Pré-requisitos
 
@@ -15,6 +26,14 @@ testes robustos em aplicações Spring Boot.
 - **Maven** - Gerenciador de dependências
 - **Docker** - Para executar os containers
 - **IDE** - [IntelliJ IDEA Community](https://www.jetbrains.com/idea/download/)
+
+
+# 🛒 API Marketplace -- Projeto base para os testes
+
+API para gerenciamento de produtos em marketplace, desenvolvida com Spring Boot para demonstrar boas práticas de testes
+de integração.
+![OpenJDK 21](https://res.cloudinary.com/ddhvxva1e/image/upload/v1772685830/Sem_t%C3%ADtulo_1_sdagiz.jpg)
+
 
 ## 🐳 Dependências via Docker
 
@@ -42,22 +61,7 @@ docker run -d -p 6379:6379 --name redis redis
 |--------------------------|---------------------|
 | `spring.profiles.active` | `local,infra_local` |
 
-## 🗂️ Estrutura do Projeto
 
-Abaixo está a estrutura principal do projeto:
-
-```
-api-market-place/
-├── application/         # Código principal da aplicação
-│   ├── src/main/java/   # Pacotes e classes Java
-│   ├── src/main/resources/ # Arquivos de configuração (application.properties, etc.)
-│   ├── target/          # Arquivos gerados pelo Maven
-├── domain/              # Camada de domínio (entidades, serviços, etc.)
-├── infrastructure/      # Configurações e integrações externas (banco, mensageria, etc.)
-├── tests/               # Testes unitários e de integração
-├── Dockerfile           # Configuração para container Docker
-├── pom.xml              # Arquivo de configuração do Maven
-```
 
 ## 🚀 Execução
 
