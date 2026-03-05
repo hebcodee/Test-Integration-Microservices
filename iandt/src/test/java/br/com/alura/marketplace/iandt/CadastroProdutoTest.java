@@ -20,10 +20,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static br.com.alura.marketplace.application.v1.dto.factory.ProdutoDtoFactory.criarProdutoDtoRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.petstore.model.factory.PetDtoFactory.criarPetDto;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -61,6 +65,19 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup {
         @DisplayName("Então deve executar com sucesso")
         @Nested
         class Sucesso {
+
+            @BeforeEach
+            void beforeEach() throws JsonProcessingException {
+                var petDto = criarPetDto()
+                        .comTodosOsCampos();
+                WIRE_MOCK.stubFor(post("/petstore/pet")
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(objectMapper.writeValueAsString(petDto))));
+            }
+
+
             @DisplayName("Dado um produto com todos os campos")
             @Test
             void teste1() throws JsonProcessingException {
