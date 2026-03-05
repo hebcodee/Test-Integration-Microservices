@@ -36,6 +36,7 @@ public class CadastroProdutoUseCase {
         var produtoSalvo = produtoRepository.save(produto);
 
 //        queueRepository.notificarCadastro(produtoSalvo);
+
 //        return produtoSalvo;
 
         return Produto.builder().build();

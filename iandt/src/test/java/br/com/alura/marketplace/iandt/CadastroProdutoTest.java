@@ -1,17 +1,16 @@
 package br.com.alura.marketplace.iandt;
 
 import br.com.alura.marketplace.application.Application;
+import br.com.alura.marketplace.domain.repository.ProdutoRepository;
 import br.com.alura.marketplace.iandt.setup.LocalStackSetup;
 import br.com.alura.marketplace.iandt.setup.PostgresSetup;
+import br.com.alura.marketplace.iandt.setup.RabbitMQSetup;
 import br.com.alura.marketplace.iandt.setup.WiremockSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.s3.S3Template;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ContextConfiguration(classes = Application.class)
 @Testcontainers
-public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, PostgresSetup {
+public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, PostgresSetup, RabbitMQSetup {
 
     @LocalServerPort
     Integer port;
@@ -45,6 +44,8 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
     @Autowired
     S3Template s3Template;
 
+    @Autowired
+    ProdutoRepository produtoRepository;
 
     @Value("${aws.s3.bucket.name}")
     String bucketName;
@@ -56,6 +57,11 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
         if (!s3Template.bucketExists(bucketName)) {
             s3Template.createBucket(bucketName);
         }
+    }
+
+    @AfterEach
+    void afterEach() {
+        produtoRepository.deleteAll();
     }
 
 
