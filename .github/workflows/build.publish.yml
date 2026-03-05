@@ -1,0 +1,31 @@
+name: Build Publish
+on:
+  push:
+    branches: [ 'main' ]
+jobs:
+  build:
+    name: Construir artefato com Maven
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configura jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          architecture: x64
+          cache: maven
+
+      - name: Executa testes com Maven
+        run: mvn test
+
+      - name: Empacota artefato com Maven
+        run: mvn package -DskipTests
+
+      - name: Guardar artegato em cache
+        run: actions/cache@v3
+        with:
+          key: package
+          path: .
