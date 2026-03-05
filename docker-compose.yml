@@ -28,7 +28,7 @@ services:
     network_mode: host
 
   api-market-place:
-    image: rodsordi/api-market-place:master
+    image: hebcodee/api-market-place:main
     ports:
       - "8080:8080"
     depends_on:

@@ -56,7 +56,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: rodsordi/api-market-place
+          images: hebcodee/api-market-place
 
       - name: Constroi e envia imagem Docker
         id: push
