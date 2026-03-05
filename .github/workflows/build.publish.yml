@@ -24,11 +24,19 @@ jobs:
       - name: Empacota artefato com Maven
         run: mvn package -DskipTests
 
-      - name: Guardar artegato em cache
+      - name: Faz o upload do artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-market-place-artifact
+          path: application/target
+
+      - name: Guardar artefato em cache
         run: actions/cache@v3
         with:
           key: package
           path: .
+
+
 
   publish_to_registry:
     needs: [ build ]
@@ -75,3 +83,21 @@ jobs:
           subject-name: index.docker.io/rodsordi/api-market-place
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+  integration_tests:
+    needs: [ publish_to_registry ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configura jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          architecture: x64
+          cache: maven
+
+      - name: Executa testes de integração com Maven
+        run: mvn test -DintegrationsTests
