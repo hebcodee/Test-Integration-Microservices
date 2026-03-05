@@ -1,7 +1,7 @@
 name: Build Publish
 on:
   push:
-    branches: [ 'aula-3-github-actions' ]
+    branches: [ 'main' ]
 jobs:
   build:
     runs-on: ubuntu-latest
