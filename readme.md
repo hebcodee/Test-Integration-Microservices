@@ -2,6 +2,8 @@
 
 Esse é um projeto base para aplicacao de testes, ele possui testes de unidade, de integracao, e2e e workflow de integração continua (CI/CD). O projeto realiza teste de integracao atraves do TestContainers no serviços de: Redis, RabbitMQ, PostgreSQL, Flyway e ApiREST.  
 
+> Para melhor entendimento visualize o historico de commits
+
 ## 🗂️ Estrutura do Projeto
 
 Abaixo está a estrutura principal do projeto:
@@ -32,6 +34,7 @@ api-market-place/
 
 API para gerenciamento de produtos em marketplace, desenvolvida com Spring Boot para demonstrar boas práticas de testes
 de integração.
+
 ![OpenJDK 21](https://res.cloudinary.com/ddhvxva1e/image/upload/v1772685830/Sem_t%C3%ADtulo_1_sdagiz.jpg)
 
 
@@ -101,6 +104,4 @@ mvn test -DintegrationTests
 
 Este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
----
 
-**Desenvolvido com ❤️ para fins educacionais**
