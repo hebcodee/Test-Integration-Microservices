@@ -2,6 +2,7 @@ package br.com.alura.marketplace.iandt;
 
 import br.com.alura.marketplace.application.Application;
 import br.com.alura.marketplace.iandt.setup.LocalStackSetup;
+import br.com.alura.marketplace.iandt.setup.PostgresSetup;
 import br.com.alura.marketplace.iandt.setup.WiremockSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ContextConfiguration(classes = Application.class)
 @Testcontainers
-public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup {
+public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, PostgresSetup {
 
     @LocalServerPort
     Integer port;
