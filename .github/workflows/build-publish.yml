@@ -71,7 +71,7 @@ jobs:
       - name: Gera atestado da imagem
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: index.docker.io/rodsordi/api-market-place
+          subject-name: index.docker.io/hebcodee/api-market-place
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
