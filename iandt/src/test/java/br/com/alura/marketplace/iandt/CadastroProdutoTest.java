@@ -28,12 +28,11 @@ import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ContextConfiguration(classes = Application.class)
 @Testcontainers
-public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, PostgresSetup, RabbitMQSetup {
+class CadastroProdutoTest implements PostgresSetup, LocalStackSetup, WiremockSetup, RabbitMQSetup {
 
     @LocalServerPort
     Integer port;
@@ -52,11 +51,10 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
 
     @BeforeEach
     void beforeEach() {
-        RestAssured.baseURI = "http://localhost:" + port + "/api";
+        RestAssured.baseURI = String.format("http://localhost:%s/api", port);
 
-        if (!s3Template.bucketExists(bucketName)) {
+        if (!s3Template.bucketExists(bucketName))
             s3Template.createBucket(bucketName);
-        }
     }
 
     @AfterEach
@@ -64,10 +62,9 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
         produtoRepository.deleteAll();
     }
 
-
     @DisplayName("Quando criar um produto")
     @Nested
-    class CadastrarProduto {
+    class CriarProduto {
 
         @DisplayName("Então deve executar com sucesso")
         @Nested
@@ -84,14 +81,12 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
                                 .withBody(objectMapper.writeValueAsString(petDto))));
             }
 
-
             @DisplayName("Dado um produto com todos os campos")
             @Test
             void teste1() throws JsonProcessingException {
                 // Dado
                 var produto = criarProdutoDtoRequest()
                         .comTodosOsCampos();
-
                 // Quando
                 var response = given()
                         .log().all()
@@ -103,12 +98,10 @@ public class CadastroProdutoTest implements LocalStackSetup, WiremockSetup, Post
                         .log().all()
                         .extract()
                         .response();
-
                 // Então
                 assertThat(response.statusCode())
                         .isEqualTo(201);
             }
-
         }
     }
 }

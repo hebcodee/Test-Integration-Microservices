@@ -17,10 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
 import static br.com.alura.marketplace.domain.entity.ProdutoFactory.criarProduto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +44,7 @@ class CadastroProdutoUseCaseTest {
     @Mock
     QueueRepository queueRepository;
 
-    @DisplayName("Quando cadastrar produto")
+    @DisplayName("Quando cadastrar um produto")
     @Nested
     class Cadastrar {
 
@@ -56,9 +59,19 @@ class CadastroProdutoUseCaseTest {
                     });
         }
 
-        @DisplayName("Entao deve executar com sucesso")
+        @DisplayName("Então deve executar com sucesso")
         @Nested
         class Sucesso {
+
+            @BeforeEach
+            void beforeEach() {
+                when(produtoRepository.save(any()))
+                        .thenAnswer(invocationOnMock -> {
+                            Produto produto = invocationOnMock.getArgument(0);
+                            setField(produto, "produtoId", UUID.fromString("b34f8434-5dfb-4a3e-aa51-bff7ce7dd884"));
+                            return produto;
+                        });
+            }
 
             @DisplayName("Dado um produto com todos os campos")
             @Test
@@ -66,17 +79,14 @@ class CadastroProdutoUseCaseTest {
                 // Dado
                 var produto = criarProduto()
                         .comTodosOsCampos();
-
-                //Quando
+                // Quando
                 var atual = cadastroProdutoUseCase.cadastrar(produto);
-
-                //Entao
+                // Então
                 assertThat(atual.getProdutoId())
                         .isNotNull();
-
             }
 
-            @DisplayName("Quando um produto com o campo status igual à {status}")
+            @DisplayName("Dado um produto com todos os campos e com {status}")
             @ParameterizedTest
             @EnumSource(Produto.Status.class)
             void teste2(Produto.Status status) {
@@ -84,13 +94,11 @@ class CadastroProdutoUseCaseTest {
                 var produto = criarProduto()
                         .comTodosOsCampos();
                 setField(produto, "status", status);
-
-                //Quando
+                // Quando
                 var atual = cadastroProdutoUseCase.cadastrar(produto);
-
-
-                //Entao
-                assertThat(produto.getStatus()).isEqualTo(status);
+                // Então
+                assertThat(atual.getStatus())
+                        .isEqualTo(status);
             }
 
             @DisplayName("Dado um produto com todos os campos e com {status}")
@@ -105,17 +113,12 @@ class CadastroProdutoUseCaseTest {
                 var produto = criarProduto()
                         .comTodosOsCampos();
                 setField(produto, "status", status);
-
-                //Quando
+                // Quando
                 var atual = cadastroProdutoUseCase.cadastrar(produto);
-
-
-                //Entao
+                // Então
                 assertThat(atual.getDescricao())
                         .endsWith(finalDaDescricao);
             }
         }
-
-
     }
 }
